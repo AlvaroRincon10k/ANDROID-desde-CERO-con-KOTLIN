@@ -3,11 +3,16 @@ package com.example.androidmaster.superheroapp
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.widget.SearchView
 import com.example.androidmaster.R
 import com.example.androidmaster.databinding.ActivitySuperHeroListBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 class SuperHeroListActivity : AppCompatActivity() {
 
@@ -34,6 +39,14 @@ class SuperHeroListActivity : AppCompatActivity() {
     }
 
     private fun searchByname(query: String) {
+        CoroutineScope(Dispatchers.IO).launch{
+            val myResponse = retrofit.create(ApiService::class.java).getSuperheroes(query)
+            if(myResponse.isSuccessful){
+                Log.i("Alvaro", "funciona :)")
+            }else{
+                Log.i("Alvaro", "No funciona :(")
+            }
+        }
 
     }
 
