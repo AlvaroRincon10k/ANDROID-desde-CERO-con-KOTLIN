@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import com.example.androidmaster.R
 import com.example.androidmaster.databinding.ActivitySuperHeroListBinding
 import kotlinx.coroutines.CoroutineScope
@@ -39,6 +40,7 @@ class SuperHeroListActivity : AppCompatActivity() {
     }
 
     private fun searchByname(query: String) {
+        binding.progressBar.isVisible = true
         CoroutineScope(Dispatchers.IO).launch{
             val myResponse = retrofit.create(ApiService::class.java).getSuperheroes(query)
             if(myResponse.isSuccessful){
@@ -46,6 +48,9 @@ class SuperHeroListActivity : AppCompatActivity() {
                 val response: SuperHeroDataResponse? = myResponse.body()
                 if(response != null){
                     Log.i("Alvaro", response.toString())
+                    runOnUiThread{
+                        binding.progressBar.isVisible = false
+                    }
                 }
             }else{
                 Log.i("Alvaro", "No funciona :(")
