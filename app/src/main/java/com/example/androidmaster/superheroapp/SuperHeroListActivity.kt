@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidmaster.R
 import com.example.androidmaster.databinding.ActivitySuperHeroListBinding
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +20,8 @@ class SuperHeroListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySuperHeroListBinding
     private lateinit var retrofit: Retrofit
+
+    private lateinit var adapter: SuperheroAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,11 @@ class SuperHeroListActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?) = false
         })
+
+        adapter = SuperheroAdapter()
+        binding.rvSuperhero.setHasFixedSize(true)
+        binding.rvSuperhero.layoutManager = LinearLayoutManager(this)
+        binding.rvSuperhero.adapter = adapter
     }
 
     private fun searchByname(query: String) {
@@ -49,6 +57,7 @@ class SuperHeroListActivity : AppCompatActivity() {
                 if(response != null){
                     Log.i("Alvaro", response.toString())
                     runOnUiThread{
+                        adapter.updateList(response.superheroes)
                         binding.progressBar.isVisible = false
                     }
                 }
