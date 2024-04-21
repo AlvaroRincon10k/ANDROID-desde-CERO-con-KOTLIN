@@ -5,12 +5,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.androidmaster.databinding.ItemSuperheroBinding
 import com.squareup.picasso.Picasso
 
-class SuperheroViewHolder(view: View): RecyclerView.ViewHolder(view) {
+class SuperheroViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemSuperheroBinding.bind(view)
-    fun bind (result: Result){
+    fun bind(result: Result, onItemSelected: (String) -> Unit) {
         binding.tvSuperheroName.text = result.name
 
         Picasso.get().load(result.superheroImage.url).into(binding.ivSuperheroe)
+        binding.root.setOnClickListener { onItemSelected(result.superheroeId) }
     }
 }
